@@ -24,6 +24,14 @@ def run_client():
             # 7. (Recommended) If you used JSON, parse the string into a dictionary.
             #    Example: data = json.loads(response_string)
             # 8. Print the received data in a user-friendly format.
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect((SERVER_IP, SERVER_PORT))
+                s.sendall(b"GET_DATA")
+                data = s.recv(4096)
+                info = json.loads(data.decode('utf-8'))
+                print("\n--- System Info ---")
+                for key, value in info.items():
+                    print(f"{key}: {value}")
             # --- END OF TODO --- #
 
         except ConnectionRefusedError:

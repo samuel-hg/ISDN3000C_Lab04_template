@@ -1,3 +1,2 @@
 # ISDN3000C Lab04
-
-**Add your readme information**
+This server uses the ip address : 192.168.127.10

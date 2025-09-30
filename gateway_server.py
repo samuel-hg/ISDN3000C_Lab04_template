@@ -4,7 +4,7 @@ import subprocess
 import json
 from datetime import datetime
 
-HOST = '0.0.0.0'  # Listen on all available network interfaces
+HOST = '127.0.0.1'  # Listen on all available network interfaces
 PORT = 9999       # Port for our gateway service
 
 def get_system_info():
@@ -64,6 +64,18 @@ def handle_client(conn, addr):
             # 4. Encode the serialized string to bytes and send it back to the client.
             #    Example: conn.sendall(formatted_data.encode('utf-8'))
             # 5. If the request is not valid, you could send back an error message.
+    try:
+        request = conn.recv(1024)
+        if request == b"GET_DATA":
+            info = get_system_info()
+            json_data = json.dumps(info)
+            conn.sendall(json_data.encode('utf-8'))
+        else:
+            conn.sendall(b"INVALID_REQUEST")
+    except Exception as e:
+        print(f"[!] Error handling client {addr}: {e}")
+    finally:
+        conn.close()
             ## --- END OF TODO --- ##
 
     print(f"[CONNECTION CLOSED] {addr} disconnected.")
